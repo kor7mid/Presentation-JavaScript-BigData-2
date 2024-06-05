@@ -1,3 +1,6 @@
 npm install lodash  //pnpm ou yarn
 
 node nom_du_fichier.js
+
+
+npm install @tensorflow/tfjs

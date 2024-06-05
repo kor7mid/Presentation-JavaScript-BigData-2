@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analyse de données Iris avec JavaScript et CSV</title>
+  </head>
+  <body>
+    <input type="file" id="csvFileInput" accept=".csv" />
+    <div id="output"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+      document
+        .getElementById('csvFileInput')
+        .addEventListener('change', function (event) {
+          const file = event.target.files[0];
+          const reader = new FileReader();
+
+          reader.onload = function (event) {
+            const csvData = event.target.result;
+            processData(csvData);
+          };
+
+          reader.readAsText(file);
+        });
+
+      function processData(csvData) {
+        Papa.parse(csvData, {
+          header: true,
+          complete: function (results) {
+            console.log('Données chargées:', results.data);
+            displayData(results.data);
+          },
+        });
+      }
+
+      function displayData(data) {
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = '';
+
+        // Créer un tableau HTML pour afficher les données
+        const table = document.createElement('table');
+        table.setAttribute('border', '1');
+        table.setAttribute('cellpadding', '10');
+
+        // Ajouter une ligne d'en-tête avec les noms des colonnes
+        const headerRow = table.insertRow();
+        Object.keys(data[0]).forEach((columnName) => {
+          const headerCell = document.createElement('th');
+          headerCell.textContent = columnName;
+          headerRow.appendChild(headerCell);
+        });
+
+        // Ajouter les données dans le tableau
+        data.forEach((rowData) => {
+          const row = table.insertRow();
+          Object.values(rowData).forEach((value) => {
+            const cell = row.insertCell();
+            cell.textContent = value;
+          });
+        });
+
+        outputDiv.appendChild(table);
+      }
+    </script>
+  </body>
+</html>
