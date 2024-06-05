@@ -1,0 +1,3 @@
+npm install lodash  //pnpm ou yarn
+
+node nom_du_fichier.js
